@@ -75,7 +75,7 @@ include { QUAST_BINS_SUMMARY                                  } from '../modules
 include { CAT_DB                                              } from '../modules/local/cat_db'
 include { CAT_DB_GENERATE                                     } from '../modules/local/cat_db_generate'
 include { CAT                                                 } from '../modules/local/cat'
-include { CAT_SUMMARY                                         } from "../modules/local/cat_summary"
+include { CAT_SUMMARY                                         } from '../modules/local/cat_summary'
 include { BIN_SUMMARY                                         } from '../modules/local/bin_summary'
 include { COMBINE_TSV as COMBINE_SUMMARY_TSV                  } from '../modules/local/combine_tsv'
 

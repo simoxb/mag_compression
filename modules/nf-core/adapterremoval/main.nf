@@ -12,12 +12,12 @@ process ADAPTERREMOVAL {
     path(adapterlist)
 
     output:
-    tuple val(meta), path("${prefix}.truncated.fastq.gz")            , optional: true, emit: singles_truncated
-    tuple val(meta), path("${prefix}.discarded.fastq.gz")            , optional: true, emit: discarded
-    tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq.gz")  , optional: true, emit: paired_truncated
-    tuple val(meta), path("${prefix}.collapsed.fastq.gz")            , optional: true, emit: collapsed
-    tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz")  , optional: true, emit: collapsed_truncated
-    tuple val(meta), path("${prefix}.paired.fastq.gz")               , optional: true, emit: paired_interleaved
+    tuple val(meta), path("${prefix}.truncated.fastq")            , optional: true, emit: singles_truncated
+    tuple val(meta), path("${prefix}.discarded.fastq")            , optional: true, emit: discarded
+    tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq")  , optional: true, emit: paired_truncated
+    tuple val(meta), path("${prefix}.collapsed.fastq")            , optional: true, emit: collapsed
+    tuple val(meta), path("${prefix}.collapsed.truncated.fastq")  , optional: true, emit: collapsed_truncated
+    tuple val(meta), path("${prefix}.paired.fastq")               , optional: true, emit: paired_interleaved
     tuple val(meta), path('*.settings')                              , emit: settings
     path "versions.yml"                                              , emit: versions
 
@@ -38,17 +38,16 @@ process ADAPTERREMOVAL {
             --basename ${prefix} \\
             --threads ${task.cpus} \\
             --seed 42 \\
-            --gzip
 
         ensure_fastq() {
             if [ -f "\${1}" ]; then
-                mv "\${1}" "\${1::-3}.fastq.gz"
+                mv "\${1}" "\${1::-3}.fastq"
             fi
 
         }
 
-        ensure_fastq '${prefix}.truncated.gz'
-        ensure_fastq '${prefix}.discarded.gz'
+        ensure_fastq '${prefix}.truncated'
+        ensure_fastq '${prefix}.discarde'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -65,22 +64,21 @@ process ADAPTERREMOVAL {
             --basename ${prefix} \\
             --threads $task.cpus \\
             --seed 42 \\
-            --gzip
 
         ensure_fastq() {
             if [ -f "\${1}" ]; then
-                mv "\${1}" "\${1::-3}.fastq.gz"
+                mv "\${1}" "\${1::-3}.fastq"
             fi
 
         }
 
-        ensure_fastq '${prefix}.truncated.gz'
-        ensure_fastq '${prefix}.discarded.gz'
-        ensure_fastq '${prefix}.pair1.truncated.gz'
-        ensure_fastq '${prefix}.pair2.truncated.gz'
-        ensure_fastq '${prefix}.collapsed.gz'
-        ensure_fastq '${prefix}.collapsed.truncated.gz'
-        ensure_fastq '${prefix}.paired.gz'
+        ensure_fastq '${prefix}.truncated'
+        ensure_fastq '${prefix}.discarded'
+        ensure_fastq '${prefix}.pair1.truncated'
+        ensure_fastq '${prefix}.pair2.truncated'
+        ensure_fastq '${prefix}.collapsed'
+        ensure_fastq '${prefix}.collapsed.truncated'
+        ensure_fastq '${prefix}.paired'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

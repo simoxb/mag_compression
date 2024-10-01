@@ -12,8 +12,8 @@ process SPADESHYBRID {
     output:
     tuple val(meta), path("SPAdesHybrid-${meta.id}_scaffolds.fasta"), emit: assembly
     path "SPAdesHybrid-${meta.id}.log"                              , emit: log
-    path "SPAdesHybrid-${meta.id}_contigs.fasta.gz"                 , emit: contigs_gz
-    path "SPAdesHybrid-${meta.id}_scaffolds.fasta.gz"               , emit: assembly_gz
+    path "SPAdesHybrid-${meta.id}_contigs.fasta"                 , emit: contigs_gz
+    path "SPAdesHybrid-${meta.id}_scaffolds.fasta"               , emit: assembly_gz
     path "SPAdesHybrid-${meta.id}_graph.gfa.gz"                     , emit: graph
     path "versions.yml"                                , emit: versions
 
@@ -34,9 +34,7 @@ process SPADESHYBRID {
         mv spades/scaffolds.fasta SPAdesHybrid-${meta.id}_scaffolds.fasta
         mv spades/contigs.fasta SPAdesHybrid-${meta.id}_contigs.fasta
         mv spades/spades.log SPAdesHybrid-${meta.id}.log
-        gzip "SPAdesHybrid-${meta.id}_contigs.fasta"
         gzip "SPAdesHybrid-${meta.id}_graph.gfa"
-        gzip -c "SPAdesHybrid-${meta.id}_scaffolds.fasta" > "SPAdesHybrid-${meta.id}_scaffolds.fasta.gz"
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

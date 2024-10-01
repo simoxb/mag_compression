@@ -14,7 +14,7 @@ process BOWTIE2_REMOVAL_ALIGN {
     path  index
 
     output:
-    tuple val(meta), path("*.unmapped*.fastq.gz") , emit: reads
+    tuple val(meta), path("*.unmapped*.fastq") , emit: reads
     path  "*.mapped*.read_ids.txt", optional:true , emit: read_ids
     tuple val(meta), path("*.bowtie2.log")        , emit: log
     path "versions.yml"                           , emit: versions
@@ -30,15 +30,15 @@ process BOWTIE2_REMOVAL_ALIGN {
                 -x ${index[0].getSimpleName()} \
                 -1 "${reads[0]}" -2 "${reads[1]}" \
                 $args \
-                --un-conc-gz ${prefix}.unmapped_%.fastq.gz \
-                --al-conc-gz ${prefix}.mapped_%.fastq.gz \
+                --un-conc ${prefix}.unmapped_%.fastq \
+                --al-conc ${prefix}.mapped_%.fastq \
                 1> /dev/null \
                 2> ${prefix}.bowtie2.log
         if [ ${save_ids} = "Y" ] ; then
-            gunzip -c ${prefix}.mapped_1.fastq.gz | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped_1.read_ids.txt
-            gunzip -c ${prefix}.mapped_2.fastq.gz | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped_2.read_ids.txt
+            cat ${prefix}.mapped_1.fastq | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped_1.read_ids.txt
+            cat ${prefix}.mapped_2.fastq | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped_2.read_ids.txt
         fi
-        rm -f ${prefix}.mapped_*.fastq.gz
+        rm -f ${prefix}.mapped_*.fastq
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -51,14 +51,14 @@ process BOWTIE2_REMOVAL_ALIGN {
                 -x ${index[0].getSimpleName()} \
                 -U ${reads} \
                 $args \
-                --un-gz ${prefix}.unmapped.fastq.gz \
-                --al-gz ${prefix}.mapped.fastq.gz \
+                --un ${prefix}.unmapped.fastq \
+                --al ${prefix}.mapped.fastq \
                 1> /dev/null \
                 2> ${prefix}.bowtie2.log
         if [ ${save_ids} = "Y" ] ; then
-            gunzip -c ${prefix}.mapped.fastq.gz | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped.read_ids.txt
+            cat ${prefix}.mapped.fastq | awk '{if(NR%4==1) print substr(\$0, 2)}' | LC_ALL=C sort > ${prefix}.mapped.read_ids.txt
         fi
-        rm -f ${prefix}.mapped.fastq.gz
+        rm -f ${prefix}.mapped.fastq
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

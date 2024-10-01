@@ -30,14 +30,14 @@
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             },
             "short_reads_2": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "dependentRequired": ["short_reads_1"],
                 "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             },
@@ -45,7 +45,7 @@
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "dependentRequired": ["short_reads_1", "short_reads_2"],
                 "errorMessage": "FastQ file for long reads cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             }

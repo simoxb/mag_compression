@@ -10,7 +10,7 @@ process FILTLONG {
     tuple val(meta), path(long_reads), path(short_reads_1), path(short_reads_2)
 
     output:
-    tuple val(meta), path("${meta.id}_lr_filtlong.fastq.gz"), emit: reads
+    tuple val(meta), path("${meta.id}_lr_filtlong.fastq"), emit: reads
     path "versions.yml"                                     , emit: versions
 
     script:
@@ -22,7 +22,7 @@ process FILTLONG {
         --keep_percent ${params.longreads_keep_percent} \
         --trim \
         --length_weight ${params.longreads_length_weight} \
-        ${long_reads} | gzip > ${meta.id}_lr_filtlong.fastq.gz
+        ${long_reads} > ${meta.id}_lr_filtlong.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

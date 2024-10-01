@@ -12,7 +12,7 @@ process NANOLYSE {
     path  fasta
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*.fastq"), emit: fastq
     path "*.log"                       , emit: log
     path "versions.yml"                , emit: versions
 
@@ -23,7 +23,7 @@ process NANOLYSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
+    NanoLyse -r $fasta > ${prefix}.fastq
     mv NanoLyse.log ${prefix}.nanolyse.log
 
     cat <<-END_VERSIONS > versions.yml

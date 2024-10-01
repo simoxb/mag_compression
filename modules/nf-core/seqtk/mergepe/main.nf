@@ -11,7 +11,7 @@ process SEQTK_MERGEPE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.fastq"), emit: reads
     path "versions.yml"          , emit: versions
 
     when:
@@ -22,7 +22,7 @@ process SEQTK_MERGEPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
-        ln -s ${reads} ${prefix}.fastq.gz
+        ln -s ${reads} ${prefix}.fastq
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -35,7 +35,7 @@ process SEQTK_MERGEPE {
             mergepe \\
             $args \\
             ${reads} \\
-            | gzip -n >> ${prefix}.fastq.gz
+            >> ${prefix}.fastq
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

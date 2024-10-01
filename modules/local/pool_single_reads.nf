@@ -10,12 +10,12 @@ process POOL_SINGLE_READS {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("pooled_${meta.id}.fastq.gz"), emit: reads
+    tuple val(meta), path("pooled_${meta.id}.fastq"), emit: reads
     path "versions.yml"                                , emit: versions
 
     script:
     """
-    cat ${reads} > "pooled_${meta.id}.fastq.gz"
+    cat ${reads} > "pooled_${meta.id}.fastq"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

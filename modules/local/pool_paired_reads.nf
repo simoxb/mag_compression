@@ -10,13 +10,13 @@ process POOL_PAIRED_READS {
     tuple val(meta), path(reads1), path(reads2)
 
     output:
-    tuple val(meta), path("pooled_${meta.id}_*.fastq.gz"), emit: reads
+    tuple val(meta), path("pooled_${meta.id}_*.fastq"), emit: reads
     path "versions.yml"                                  , emit: versions
 
     script:
     """
-    cat ${reads1} > "pooled_${meta.id}_1.fastq.gz"
-    cat ${reads2} > "pooled_${meta.id}_2.fastq.gz"
+    cat ${reads1} > "pooled_${meta.id}_1.fastq"
+    cat ${reads2} > "pooled_${meta.id}_2.fastq"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

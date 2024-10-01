@@ -17,8 +17,8 @@ process CENTRIFUGE_CENTRIFUGE {
     tuple val(meta), path('*report.txt')                 , emit: report
     tuple val(meta), path('*results.txt')                , emit: results
     tuple val(meta), path('*.{sam,tab}')                 , optional: true, emit: sam
-    tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz')   , optional: true, emit: fastq_mapped
-    tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz') , optional: true, emit: fastq_unmapped
+    tuple val(meta), path('*.mapped.fastq{,.1,.2}')   , optional: true, emit: fastq_mapped
+    tuple val(meta), path('*.unmapped.fastq{,.1,.2}') , optional: true, emit: fastq_unmapped
     path "versions.yml"                                  , emit: versions
 
     when:
@@ -31,11 +31,11 @@ process CENTRIFUGE_CENTRIFUGE {
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
-        unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
-        aligned = save_aligned ? "--al-gz ${prefix}.mapped.fastq.gz" : ''
+        unaligned = save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
+        aligned = save_aligned ? "--al ${prefix}.mapped.fastq" : ''
     } else {
-        unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
-        aligned = save_aligned ? "--al-conc-gz ${prefix}.mapped.fastq.gz" : ''
+        unaligned = save_unaligned ? "--un-conc ${prefix}.unmapped.fastq" : ''
+        aligned = save_aligned ? "--al-conc ${prefix}.mapped.fastq" : ''
     }
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
@@ -70,18 +70,18 @@ process CENTRIFUGE_CENTRIFUGE {
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
-        unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
-        aligned = save_aligned ? "--al-gz ${prefix}.mapped.fastq.gz" : ''
+        unaligned = save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
+        aligned = save_aligned ? "--al ${prefix}.mapped.fastq" : ''
     } else {
-        unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
-        aligned = save_aligned ? "--al-conc-gz ${prefix}.mapped.fastq.gz" : ''
+        unaligned = save_unaligned ? "--un-conc ${prefix}.unmapped.fastq" : ''
+        aligned = save_aligned ? "--al-conc ${prefix}.mapped.fastq" : ''
     }
     """
     touch ${prefix}.report.txt
     touch ${prefix}.results.txt
     touch ${prefix}.sam
-    echo | gzip -n > ${prefix}.unmapped.fastq.gz
-    echo | gzip -n > ${prefix}.mapped.fastq.gz
+    echo > ${prefix}.unmapped.fastq
+    echo > ${prefix}.mapped.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

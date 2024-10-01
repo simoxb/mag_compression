@@ -16,7 +16,7 @@ process FREEBAYES {
     path cnv
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     path  "versions.yml"             , emit: versions
 
     when:
@@ -41,7 +41,6 @@ process FREEBAYES {
         $args \\
         $input > ${prefix}.vcf
 
-    bgzip ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -116,16 +116,16 @@ workflow BINNING {
     ch_split_fasta_results_transposed = SPLIT_FASTA.out.unbinned.transpose()
     ch_versions = ch_versions.mix(SPLIT_FASTA.out.versions)
 
-    GUNZIP_BINS ( ch_final_bins_for_gunzip )
-    ch_binning_results_gunzipped = GUNZIP_BINS.out.gunzip
+    //GUNZIP_BINS ( ch_final_bins_for_gunzip )
+    ch_binning_results_gunzipped = ch_final_bins_for_gunzip
         .groupTuple(by: 0)
 
-    GUNZIP_UNBINS ( ch_split_fasta_results_transposed )
-    ch_splitfasta_results_gunzipped = GUNZIP_UNBINS.out.gunzip
+    //GUNZIP_UNBINS ( ch_split_fasta_results_transposed )
+    ch_splitfasta_results_gunzipped = ch_split_fasta_results_transposed
         .groupTuple(by: 0)
 
-    ch_versions = ch_versions.mix(GUNZIP_BINS.out.versions.first())
-    ch_versions = ch_versions.mix(GUNZIP_UNBINS.out.versions.first())
+    //ch_versions = ch_versions.mix(GUNZIP_BINS.out.versions.first())
+    //ch_versions = ch_versions.mix(GUNZIP_UNBINS.out.versions.first())
 
     emit:
     bins                                         = ch_binning_results_gunzipped

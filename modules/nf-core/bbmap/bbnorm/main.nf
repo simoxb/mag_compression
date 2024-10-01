@@ -11,7 +11,7 @@ process BBMAP_BBNORM {
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*.fastq"), emit: fastq
     tuple val(meta), path("*.log")     , emit: log
     path "versions.yml"                , emit: versions
 
@@ -23,7 +23,7 @@ process BBMAP_BBNORM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     input  = meta.single_end ? "in=${fastq.join(',')}" : "in=${fastq[0]} in2=${fastq[1]}"
-    output = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
+    output = meta.single_end ? "out=${prefix}.fastq" : "out1=${prefix}_1.nm.fastq out2=${prefix}_2.nm.fastq"
 
     """
     bbnorm.sh \\
