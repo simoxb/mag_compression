@@ -30,24 +30,24 @@
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.naf)?$",
                 "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             },
             "short_reads_2": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.naf)?$",
                 "dependentRequired": ["short_reads_1"],
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.naf' or '.fastq.naf'"
             },
             "long_reads": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.naf)?$",
                 "dependentRequired": ["short_reads_1", "short_reads_2"],
-                "errorMessage": "FastQ file for long reads cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "errorMessage": "FastQ file for long reads cannot contain spaces and must have extension '.fq.naf' or '.fastq.naf'"
             }
         },
         "required": ["sample", "short_reads_1"]

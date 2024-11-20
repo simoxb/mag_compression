@@ -1,0 +1,10 @@
+sample	group	short_reads_1	short_reads_2	long_reads
+meta_40870b	meta_40870	/work/simon/data_mag/SRR2846706_1.fastq.gz	/work/simon/data_mag/SRR2846706_2.fastq.gz	
+meta_40870d28	meta_40870	/work/simon/data_mag/SRR2857686_1.fastq.gz	/work/simon/data_mag/SRR2857686_2.fastq.gz	
+meta_40870d56	meta_40870	/work/simon/data_mag/SRR2857970_1.fastq.gz	/work/simon/data_mag/SRR2857970_2.fastq.gz	
+meta_41952b	meta_41952	/work/simon/data_mag/SRR2858128_1.fastq.gz	/work/simon/data_mag/SRR2858128_2.fastq.gz	
+meta_41952d28	meta_41952	/work/simon/data_mag/SRR2857885_1.fastq.gz	/work/simon/data_mag/SRR2857885_2.fastq.gz	
+meta_41952d56	meta_41952	/work/simon/data_mag/SRR2857886_1.fastq.gz	/work/simon/data_mag/SRR2857886_2.fastq.gz	
+meta_42827b	meta_42827	/work/simon/data_mag/SRR2858047_1.fastq.gz	/work/simon/data_mag/SRR2858047_2.fastq.gz	
+meta_42827d28	meta_42827	/work/simon/data_mag/SRR2857332_1.fastq.gz	/work/simon/data_mag/SRR2857332_2.fastq.gz	
+meta_42827d56	meta_42827	/work/simon/data_mag/SRR2857969_1.fastq.gz	/work/simon/data_mag/SRR2857969_2.fastq.gz	
