@@ -14,13 +14,13 @@ process FASTP {
     val   save_merged
 
     output:
-    tuple val(meta), path('${meta.id}*fastp_{1,2}.fastp.fastq') , optional:true, emit: reads
-    tuple val(meta), path('*.json')           , emit: json
-    tuple val(meta), path('*.html')           , emit: html
-    tuple val(meta), path('*.log')            , emit: log
+    tuple val(meta), path("fastp_${meta.id}*{1,2}.fastq") , optional:true, emit: reads
+    tuple val(meta), path("*fastp*${meta.id}*.json")           , emit: json
+    tuple val(meta), path("fastp_${meta.id}.html")           , emit: html
+    tuple val(meta), path("fastp_${meta.id}.log")            , emit: log
     path "versions.yml"                       , emit: versions
-    tuple val(meta), path('*_{1,2}.fail.fastq')  , optional:true, emit: reads_fail
-    tuple val(meta), path('*_{1,2}.merged.fastq'), optional:true, emit: reads_merged
+    tuple val(meta), path("*_{1,2}.fail.fastq")  , optional:true, emit: reads_fail
+    tuple val(meta), path("*_{1,2}.merged.fastq"), optional:true, emit: reads_merged
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,7 +56,7 @@ process FASTP {
     } else if (meta.single_end) {
         """
         [ ! -f  ${prefix}.fastq ] && ln -sf $reads ${prefix}.fastq
-
+        
         fastp \\
             --in1 ${prefix}.fastq \\
             --out1  ${prefix}.fastp.fastq \\
@@ -76,22 +76,27 @@ process FASTP {
     } else {
         def merge_fastq = save_merged ? "-m --merged_out ${prefix}.merged.fastq" : ''
         """
+        du -sh *
+        echo ${prefix}
+        echo "_______________________"
         [ ! -f  ${prefix}_1.fastq ] && ln -sf ${reads[0]} ${prefix}_1.fastq
         [ ! -f  ${prefix}_2.fastq ] && ln -sf ${reads[1]} ${prefix}_2.fastq
         fastp \\
             --in1 ${prefix}_1.fastq \\
             --in2 ${prefix}_2.fastq \\
-            --out1 ${prefix}_1.fastp.fastq \\
-            --out2 ${prefix}_2.fastp.fastq \\
-            --json ${prefix}.fastp.json \\
-            --html ${prefix}.fastp.html \\
+            --out1 fastp_${prefix}_1.fastq \\
+            --out2 fastp_${prefix}_2.fastq \\
+            --json fastp_${prefix}.json \\
+            --html fastp_${prefix}.html \\
             $adapter_list \\
             $fail_fastq \\
             $merge_fastq \\
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
             $args \\
-            2> ${prefix}.fastp.log
+            2> fastp_${prefix}.log
+        du -sh * 
+        cat fastp_${prefix}.log
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
