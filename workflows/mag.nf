@@ -254,9 +254,11 @@ workflow MAG {
                 ch_host_fasta
             )
             ch_host_bowtie2index = BOWTIE2_HOST_REMOVAL_BUILD.out.index
+            ch_host_bowtie2index.view()
+            ch_short_reads_prepped.view()
         }
         ch_bowtie2_removal_host_multiqc = Channel.empty()
-        if (params.host_fasta || params.host_genome){
+        if (params.host_fasta){
             BOWTIE2_HOST_REMOVAL_ALIGN (
                 ch_short_reads_prepped,
                 ch_host_bowtie2index

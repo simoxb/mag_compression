@@ -11,7 +11,7 @@ process MAXBIN2 {
     tuple val(meta), path(contigs), path(reads), path(abund)
 
     output:
-    tuple val(meta), path("*.fasta")   , emit: binned_fastas
+    tuple val(meta), path("${meta.id}.fasta")   , emit: binned_fastas
     tuple val(meta), path("*.summary")    , emit: summary
     tuple val(meta), path("*.log.gz")     , emit: log
     tuple val(meta), path("*.marker.gz")  , emit: marker_counts
@@ -26,7 +26,7 @@ process MAXBIN2 {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = "${meta.id}"
     def associate_files = reads ? "-reads $reads" : "-abund $abund"
     """
     mkdir input/ && mv $contigs input/

@@ -13,7 +13,7 @@ process CONCOCT_CUTUPFASTA {
     val(bed)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("${meta.id}.fasta"), emit: fasta
     tuple val(meta), path("*.bed")  , optional: true, emit: bed
     path "versions.yml"             , emit: versions
 
@@ -22,7 +22,7 @@ process CONCOCT_CUTUPFASTA {
 
     script:
     def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def prefix     = "${meta.id}"
     def bedfile    = bed ? "-b ${prefix}.bed" : ""
     if ("$fasta" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
@@ -31,6 +31,7 @@ process CONCOCT_CUTUPFASTA {
         $args \\
         $bedfile \\
         > ${prefix}.fasta
+    du -shk *
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

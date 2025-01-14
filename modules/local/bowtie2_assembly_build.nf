@@ -10,7 +10,7 @@ process BOWTIE2_ASSEMBLY_BUILD {
     tuple val(meta), path(assembly)
 
     output:
-    tuple val(meta), path(assembly), path('bt2_index_base*'), emit: assembly_index
+    tuple val(meta), path("${assembly.baseName}"), path('bt2_index_base*'), emit: assembly_index
     path "versions.yml"                                     , emit: versions
 
     script:
@@ -18,6 +18,7 @@ process BOWTIE2_ASSEMBLY_BUILD {
     """
     mkdir bowtie
     bowtie2-build --threads $task.cpus $assembly "bt2_index_base"
+    du -shk *
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

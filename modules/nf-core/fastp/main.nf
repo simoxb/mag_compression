@@ -14,7 +14,7 @@ process FASTP {
     val   save_merged
 
     output:
-    tuple val(meta), path("fastp_${meta.id}*{1,2}.fastq") , optional:true, emit: reads
+    tuple val(meta), path("*trimmed*.f*q") , emit: reads
     tuple val(meta), path("*fastp*${meta.id}*.json")           , emit: json
     tuple val(meta), path("fastp_${meta.id}.html")           , emit: html
     tuple val(meta), path("fastp_${meta.id}.log")            , emit: log
@@ -67,7 +67,7 @@ process FASTP {
             $fail_fastq \\
             $args \\
             2> ${prefix}.fastp.log
-
+        
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
@@ -76,16 +76,12 @@ process FASTP {
     } else {
         def merge_fastq = save_merged ? "-m --merged_out ${prefix}.merged.fastq" : ''
         """
-        du -sh *
-        echo ${prefix}
-        echo "_______________________"
-        [ ! -f  ${prefix}_1.fastq ] && ln -sf ${reads[0]} ${prefix}_1.fastq
-        [ ! -f  ${prefix}_2.fastq ] && ln -sf ${reads[1]} ${prefix}_2.fastq
+        du -sh * 
         fastp \\
-            --in1 ${prefix}_1.fastq \\
-            --in2 ${prefix}_2.fastq \\
-            --out1 fastp_${prefix}_1.fastq \\
-            --out2 fastp_${prefix}_2.fastq \\
+            --in1 ${reads[0]} \\
+            --in2 ${reads[1]} \\
+            --out1 trimmed_${prefix}_1.fastq \\
+            --out2 trimmed_${prefix}_2.fastq \\
             --json fastp_${prefix}.json \\
             --html fastp_${prefix}.html \\
             $adapter_list \\
@@ -96,8 +92,6 @@ process FASTP {
             $args \\
             2> fastp_${prefix}.log
         du -sh * 
-        cat fastp_${prefix}.log
-
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")

@@ -10,7 +10,7 @@ process BOWTIE2_ASSEMBLY_ALIGN {
     tuple val(assembly_meta), path(assembly), path(index), val(reads_meta), path(reads)
 
     output:
-    tuple val(assembly_meta), path(assembly), path("${assembly_meta.assembler}-${assembly_meta.id}-${reads_meta.id}.bam"), path("${assembly_meta.assembler}-${assembly_meta.id}-${reads_meta.id}.bam.bai"), emit: mappings
+    tuple val(assembly_meta), path("${assembly.baseName}"), path("${assembly_meta.assembler}-${assembly_meta.id}-${reads_meta.id}.bam"), path("${assembly_meta.assembler}-${assembly_meta.id}-${reads_meta.id}.bam.bai"), emit: mappings
     tuple val(assembly_meta), val(reads_meta), path("*.bowtie2.log")                                                                                                                                      , emit: log
     path "versions.yml"                                                                                                                                                                                   , emit: versions
 

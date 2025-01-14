@@ -32,11 +32,11 @@ process FASTQC {
     // FastQC memory value allowed range (100 - 10000)
 
     """
+    du -shk * 
     fastqc \\
-        $args \\
         --threads $task.cpus \\
         ${reads}
-
+    du -shk * 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastqc: \$( fastqc --version | sed '/FastQC v/!d; s/.*v//' )

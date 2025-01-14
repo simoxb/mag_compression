@@ -14,7 +14,7 @@ process BOWTIE2_REMOVAL_ALIGN {
     path  index
 
     output:
-    tuple val(meta), path("*.unmapped*.fastq") , emit: reads
+    tuple val(meta), path("*unmapped*.f*q") , emit: reads
     path  "*.mapped*.read_ids.txt", optional:true , emit: read_ids
     tuple val(meta), path("*.bowtie2.log")        , emit: log
     path "versions.yml"                           , emit: versions
@@ -30,8 +30,8 @@ process BOWTIE2_REMOVAL_ALIGN {
                 -x ${index[0].getSimpleName()} \
                 -1 "${reads[0]}" -2 "${reads[1]}" \
                 $args \
-                --un-conc ${prefix}.unmapped_%.fastq \
-                --al-conc ${prefix}.mapped_%.fastq \
+                --un-conc ${prefix}_unmapped_%.fastq \
+                --al-conc ${prefix}_mapped_%.fastq \
                 1> /dev/null \
                 2> ${prefix}.bowtie2.log
         if [ ${save_ids} = "Y" ] ; then
@@ -51,8 +51,8 @@ process BOWTIE2_REMOVAL_ALIGN {
                 -x ${index[0].getSimpleName()} \
                 -U ${reads} \
                 $args \
-                --un ${prefix}.unmapped.fastq \
-                --al ${prefix}.mapped.fastq \
+                --un ${prefix}_unmapped.fastq \
+                --al ${prefix}_mapped.fastq \
                 1> /dev/null \
                 2> ${prefix}.bowtie2.log
         if [ ${save_ids} = "Y" ] ; then
