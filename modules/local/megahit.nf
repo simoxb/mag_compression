@@ -10,9 +10,9 @@ process MEGAHIT {
     tuple val(meta), path(reads1), path(reads2)
 
     output:
-    tuple val(meta), path("MEGAHIT/MEGAHIT-${meta.id}.contigs.fa"), emit: assembly
+    tuple val(meta), path("MEGAHIT-${meta.id}_contigs.fa"), emit: assembly
     path "MEGAHIT/*.log"                                  , emit: log
-    path "MEGAHIT/MEGAHIT-${meta.id}.contigs.fa"               , emit: assembly_gz
+    path "MEGAHIT-${meta.id}_contigs.fa"               , emit: assembly_gz
     path "versions.yml"                                   , emit: versions
 
     script:
@@ -27,7 +27,7 @@ process MEGAHIT {
         fi
 
         megahit $args -t "${task.cpus}" -m $mem $input -o MEGAHIT --out-prefix "MEGAHIT-${meta.id}"
-
+        mv MEGAHIT/MEGAHIT-${meta.id}.contigs.fa MEGAHIT-${meta.id}_contigs.fa
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

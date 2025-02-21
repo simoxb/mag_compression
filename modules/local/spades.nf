@@ -28,6 +28,8 @@ process SPADES {
         """
         metaspades.py \
             $args \
+            -k 11 \
+            --only-assembler \
             --threads "${task.cpus}" \
             --memory $maxmem \
             ${readstr} \
